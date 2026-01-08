@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyuukurarin - A Fanmade Tribute</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400&family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 50%, #f8ceec 100%);
+            color: #4a4a4a;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+            position: relative;
+        }
+
+        /* Hero Section */
+        #hero {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            animation: float 10s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        #hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            color: #8b5cf6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeIn 2s ease-in-out;
+        }
+        #hero h2 {
+            font-size: 1.5rem;
+            font-family: 'Dancing Script', cursive;
+            color: #f8ceec;
+            margin-top: 10px;
+            animation: fadeIn 3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .shape {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: drift 15s linear infinite;
+        }
+        .shape:nth-child(1) { width: 50px; height: 50px; top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 30px; height: 30px; top: 50%; left: 80%; animation-delay: 5s; }
+        .shape:nth-child(3) { width: 40px; height: 40px; top: 80%; left: 20%; animation-delay: 10s; }
+        @keyframes drift {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(100vw) translateY(-100vh); }
+        }
+        #music-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 20px;
+            color: #4a4a4a;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            transition: background 0.3s;
+        }
+        #music-toggle:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        /* About the Song */
+        #about {
+            background: linear-gradient(135deg, #f8ceec 0%, #e0c3fc 100%);
+            text-align: center;
+        }
+        #about p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        /* Lyrics Section */
+        #lyrics {
+            background: linear-gradient(135deg, #8ec5fc 0%, #f8ceec 100%);
+        }
+        .lyrics-container {
+            max-width: 800px;
+            text-align: center;
+        }
+        .lyric-line {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s, transform 1s;
+            font-family: 'Dancing Script', cursive;
+            color: #8b5cf6;
+        }
+        .lyric-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Visual Gallery */
+        #gallery {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: filter 0.3s;
+        }
+        .gallery-item:hover img {
+            filter: blur(2px);
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Meaning & Feelings */
+        #meaning {
+            background: linear-gradient(135deg, #f8ceec 0%, #e0c3fc 100%);
+            text-align: center;
+        }
+        .diary-entry {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.5);
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            color: #4a4a4a;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: #4a4a4a;
+            color: #f8ceec;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 2.5rem; }
+            #hero h2 { font-size: 1.2rem; }
+            .lyrics-container { padding: 0 20px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <section id="hero">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <div class="container">
+            <h1>Kyuukurarin</h1>
+            <h2>A fanmade tribute website</h2>
+            <button id="music-toggle">Play Ambient Music</button>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>About the Song</h2>
+            <p>In the quiet whispers of twilight, "Kyuukurarin" unfolds like a delicate dream, weaving threads of melancholy and surreal wonder. This Vocaloid melody evokes a sense of solitary reflection, where emotions drift like petals in a gentle breeze, inviting listeners to ponder the ephemeral beauty of fleeting moments.</p>
+        </div>
+    </section>
+
+    <section id="lyrics">
+        <div class="container">
+            <h2>Lyrics</h2>
+            <div class="lyrics-container">
+                <div class="lyric-line">きゅうくらりん きゅうくらりん</div>
+                <div class="lyric-line">空に浮かぶ 夢のような</div>
+                <div class="lyric-line">心の声が 響く</div>
+                <div class="lyric-line">孤独な夜に 寄り添う</div>
+                <div class="lyric-line">きゅうくらりん きゅうくらりん</div>
+                <!-- Add more lines as needed; this is a placeholder for the full lyrics -->
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <h2>Visual Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/250x200/8ec5fc/f8ceec?text=Dreamy+Abstract" alt="Dreamy Abstract">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/250x200/e0c3fc/8b5cf6?text=Anime+Style" alt="Anime Style">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/250x200/f8ceec/e0c3fc?text=Surreal+Shapes" alt="Surreal Shapes">
+                </div>
+                <!-- Replace with actual fanmade images or SVGs -->
+            </div>
+        </div>
+    </section>
+
+    <section id="meaning">
+        <div class="container">
+            <h2>Meaning & Feelings</h2>
+            <div class="diary-entry">
+                <p>Dear Diary,</p>
+                <p>As I listen to "Kyuukurarin," I feel a gentle ache in my chest, like the soft pull of nostalgia for a place I've never been. It's
